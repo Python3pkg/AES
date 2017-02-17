@@ -8,25 +8,22 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 # os.random: " This function returns random bytes from an OS-specific randomness source "
 iv = os.urandom(16)
 salt = os.urandom(16)
-password = raw_input("Informe sua senha: ")
 
 def hashing(password):
     hash = PBKDF2HMAC(algorithm=hashes.SHA256, length=32, salt=salt, iterations=10000, backend=default_backend())
-    key = hash.derive(password)
+    key = hash.derive(password.encode('ascii'))
 
     return key
 
 def encrypt(key, iv, password):
     padder = padding.PKCS7(128).padder()
-    padded_password = padder.update(password) + padder.finalize()
+    padded_password = padder.update(password.encode('ascii')) + padder.finalize()
 
     ct = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encrypted = ct.encryptor()
     ciphertext = encrypted.update(padded_password) + encrypted.finalize()
 
     return ciphertext
-
-print encrypt(hashing(password), iv, password)
 
 def decrypt(key, iv, password):
     pt = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
@@ -38,4 +35,16 @@ def decrypt(key, iv, password):
 
     return unpadded_password
 
-print decrypt(hashing(password),iv, encrypt(hashing(password), iv, password))
+# Criptography usage
+
+def EncryptExample():
+
+    password = input("Type a password ('ASCII only'): ")
+    
+    _enc = encrypt(hashing(password), iv, password)
+    print("\nEncryption:\nAs bytes: ", _enc, "\nAs HEX: ", _enc.hex())
+
+    _dec = decrypt(hashing(password),iv, encrypt(hashing(password), iv, password))
+    print("\nDecryption:\n", _dec.decode("utf-8"))
+
+EncryptExample()

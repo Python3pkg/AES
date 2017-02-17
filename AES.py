@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
@@ -42,7 +45,7 @@ def EncryptExample():
     password = input("Type a password ('ASCII only'): ")
     
     _enc = encrypt(hashing(password), iv, password)
-    print("\nEncryption:\nAs bytes: ", _enc, "\nAs HEX: ", _enc.hex())
+    print("\nEncryption:\nAs bytes: ", _enc, "\nAs HEX: ", _enc.hex(),"\nString: ",str(_enc))
 
     _dec = decrypt(hashing(password),iv, encrypt(hashing(password), iv, password))
     print("\nDecryption:\n", _dec.decode("utf-8"))

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyAES import PySimpleAES
+from PySimpleAES import PySimpleAES
 
 """
 

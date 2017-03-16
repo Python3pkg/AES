@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import main
+import sys
+from PyAES import PySimpleAES
 
 """
 
@@ -17,27 +18,48 @@ Example_dec()
 
 """
 
-# Example definitions
+# Defining your own class
 
-iv, salt = main.fortify()
+class MyAES(PySimpleAES):
 
-def Example_enc():
-    message     = input("Message (ASCCI)  : ")
-    password    = input("Password (ASCII) : ")
-    _enc = main.encrypt(main.hashing(password, salt), iv, message)
+    def __init__(self):
+        self.iv, self.salt = self.fortify()
+
+    def Example_enc(self):
+        message     = input("Message (ASCCI)  : ")
+        password    = input("Password (ASCII) : ")
+        _enc = self.encrypt(self.hashing(password, self.salt), self.iv, message)
+        
+        return _enc
+        
+    def Example_dec(self, enc_data):
+        password = input("Password (ASCII) : ")
+        
+        return self.decrypt(self.hashing(password, self.salt), self.iv, enc_data)
     
-    return _enc
-    
-def Example_dec(enc_data):
-    password = input("Password (ASCII) : ")
-    
-    return main.decrypt(main.hashing(password, salt), iv, enc_data)
-    
 
-# Example Calls
 
-Enc = Example_enc()
-print("Enc: ", Enc.hex())
+print('''
+    Consuming your Class
+    
+    -> Instatiate class <MyAES> and reuse your functions
+    -> You can always override and inherit the methods by using, for example:
+         
+         def MyEncriptation(self, **myParameters):
+             # ... your code here
+             super(MyAES, self).encrypt(*args, **kargs)''')
 
-Dec = Example_dec(Enc)
-print(Dec.decode('ascii'))
+
+SampleAES = MyAES()
+
+# Encrypting
+Enc = SampleAES.Example_enc()
+if Enc:
+    print("Enc: ", Enc.hex())
+else:
+    sys.exit()
+
+# Decrypting
+Dec = SampleAES.Example_dec(Enc)
+if Dec:
+    print(Dec.decode('ascii'))

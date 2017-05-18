@@ -18,7 +18,7 @@ class PySimpleAES:
             return iv, salt
         
         except BaseException as e:
-            print(('ERROR Salting: %s' % str(e)))
+            print('ERROR Salting: %s' % str(e))
             return
     
     def hashing(self, password, salt):
@@ -41,7 +41,7 @@ class PySimpleAES:
             return ciphertext
         
         except BaseException as e:
-            print(('ERROR Encrypting: %s' % str(e)))
+            print('ERROR Encrypting: %s' % str(e))
             return    
     
     def decrypt(self, key, iv, password):
@@ -54,7 +54,7 @@ class PySimpleAES:
             return unpadded_password
         
         except BaseException as e:
-            print(('ERROR Decrypting: %s' % str(e)))
+            print('ERROR Decrypting: %s' % str(e))
             return
 
     

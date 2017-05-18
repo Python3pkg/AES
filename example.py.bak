@@ -26,14 +26,14 @@ class MyAES(PySimpleAES):
         self.iv, self.salt = self.fortify()
 
     def Example_enc(self):
-        message     = eval(input("Message (ASCCI)  : "))
-        password    = eval(input("Password (ASCII) : "))
+        message     = input("Message (ASCCI)  : ")
+        password    = input("Password (ASCII) : ")
         _enc = self.encrypt(self.hashing(password, self.salt), self.iv, message)
         
         return _enc
         
     def Example_dec(self, enc_data):
-        password = eval(input("Password (ASCII) : "))
+        password = input("Password (ASCII) : ")
         
         return self.decrypt(self.hashing(password, self.salt), self.iv, enc_data)
     
@@ -55,11 +55,11 @@ SampleAES = MyAES()
 # Encrypting
 Enc = SampleAES.Example_enc()
 if Enc:
-    print(("Enc: ", Enc.hex()))
+    print("Enc: ", Enc.hex())
 else:
     sys.exit()
 
 # Decrypting
 Dec = SampleAES.Example_dec(Enc)
 if Dec:
-    print((Dec.decode('ascii')))
+    print(Dec.decode('ascii'))
